@@ -48,6 +48,7 @@ export function Register() {
   }
 
   function handleCloseSelectCategoryModal() {
+    console.log('exec')
     setCategoryModalOpen(false);
   }
 
