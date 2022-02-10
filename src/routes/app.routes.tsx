@@ -6,8 +6,13 @@ import { useTheme } from 'styled-components'
 import { Platform } from 'react-native'
 import { MaterialIcons } from "@expo/vector-icons"
 
-const { Navigator, Screen } = createBottomTabNavigator()
+export type AppRoutesParamList = {
+  Listagem: undefined; // <- undefined = rota não requer parâmetros.
+  Cadastrar: undefined;
+  Resumo: undefined;
+};
 
+const { Navigator, Screen } = createBottomTabNavigator<AppRoutesParamList>()
 
 export function AppRoutes() {
     const theme = useTheme()

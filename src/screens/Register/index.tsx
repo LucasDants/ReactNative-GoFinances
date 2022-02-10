@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../../components/Form/Button";
 import { CategorySelectButton } from "../../components/Form/CategorySelectButton";
 import { TransactionTypeButton } from "../../components/Form/TransactionTypeButton";
@@ -14,13 +14,26 @@ import {
   TransactionTypes,
 } from "./styles";
 
+import uuid from 'react-native-uuid'
+
 import { CategorySelect } from "../CategorySelect";
 import { InputForm } from "../../components/Form/InputFom";
 import { useForm } from "react-hook-form";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
+import { AppRoutesParamList } from "../../routes/app.routes";
+import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 
 interface FormData {
   [name: string]: any;
 }
+
+type RegisterNavigationProps = BottomTabNavigationProp<
+  AppRoutesParamList,
+  "Cadastrar"
+>;
+
+const dataKey = '@gofinances:transactions'
 
 const schema = yup.object().shape({
   name: yup.string().required("Nome é obrigatório"),
@@ -35,11 +48,13 @@ export function Register() {
   const [transactionType, setTransactionType] = useState("");
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
 
-  const { control, handleSubmit, formState: { errors } } = useForm({
+  const { control, handleSubmit, reset, formState: { errors } } = useForm({
     resolver: yupResolver(schema)
   });
 
-  function handleTransactionTypeSelect(type: "up" | "down") {
+  const navigation = useNavigation<RegisterNavigationProps>()
+
+  function handleTransactionTypeSelect(type: "positive" | "negative") {
     setTransactionType(type);
   }
 
@@ -48,11 +63,10 @@ export function Register() {
   }
 
   function handleCloseSelectCategoryModal() {
-    console.log('exec')
     setCategoryModalOpen(false);
   }
 
-  function handleRegister(form: FormData) {
+  async function handleRegister(form: FormData) {
     if(!transactionType) {
       return Alert.alert("Selecione o tipo da transação!")
     }
@@ -61,15 +75,44 @@ export function Register() {
       return Alert.alert("Selecione a categoria")
     }
 
-    const data = {
+    const newTransaction = {
+      id: String(uuid.v4()),
       name: form.name,
       amount: form.amount,
-      transactionType,
+      type: transactionType,
       category: category.key,
+      date: new Date()
     };
 
-    console.log(data);
+    try {
+      const data = await AsyncStorage.getItem(dataKey)
+      const currentData = data ? JSON.parse(data) : []
+
+      const dataFormatted = [newTransaction, ...currentData]
+      console.log(dataFormatted)
+      await AsyncStorage.setItem(dataKey, JSON.stringify(dataFormatted))
+
+      reset()
+      setTransactionType('')
+      setCategory({
+        key: "category",
+        name: "Categoria",
+      })
+
+      navigation.navigate('Listagem')
+
+    } catch (err) {
+      Alert.alert('Não foi possível salvar')
+    }
   }
+
+  useEffect(() => {
+      async function loadData() {
+        await AsyncStorage.getItem(dataKey)
+      }
+      
+      loadData()
+  }, [])
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -99,14 +142,14 @@ export function Register() {
               <TransactionTypeButton
                 type="up"
                 title="Income"
-                onPress={() => handleTransactionTypeSelect("up")}
-                isActive={transactionType === "up"}
+                onPress={() => handleTransactionTypeSelect("positive")}
+                isActive={transactionType === "positive"}
               />
               <TransactionTypeButton
                 type="down"
                 title="Outcome"
-                onPress={() => handleTransactionTypeSelect("down")}
-                isActive={transactionType === "down"}
+                onPress={() => handleTransactionTypeSelect("negative")}
+                isActive={transactionType === "negative"}
               />
             </TransactionTypes>
 
