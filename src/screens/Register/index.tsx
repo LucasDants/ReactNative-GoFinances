@@ -37,7 +37,7 @@ const dataKey = '@gofinances:transactions'
 
 const schema = yup.object().shape({
   name: yup.string().required("Nome é obrigatório"),
-  amount: yup.number().typeError("Informe um valor numérico").positive("O preço não pode ser negativo")
+  amount: yup.number().typeError("Informe um valor numérico").positive("O preço não pode ser negativo").required("Valor é obrigatório"),
 })
 
 export function Register() {
