@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import * as AuthSession from 'expo-auth-session';
 import AppleAuthentication from 'expo-apple-authentication'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -17,6 +17,8 @@ interface IAuthContextData {
     user: User
     signInWithGoogle: () => Promise<void>
     signInWithApple: () => Promise<void>
+    signOut: () => Promise<void>
+    userIsLoading: boolean
 }
 
 interface AuthorizationResponse {
@@ -26,12 +28,15 @@ interface AuthorizationResponse {
     type: string;
 }
 
-const { CLIENT_ID, REDIRECT_URI } = process.env
+const { CLIENT_ID } = process.env;
+const { REDIRECT_URI } = process.env;
+
 
 const AuthContext = createContext({} as IAuthContextData);
 
 function AuthProvider({ children }: AuthProviderProps) {
     const [user, setUser] = useState<User>({} as User)
+    const [userIsLoading, setUserIsLoading] = useState(true)
 
     async function signInWithGoogle() {
         try {
@@ -73,11 +78,13 @@ function AuthProvider({ children }: AuthProviderProps) {
             })
 
             if(credential) {
+                const name = credential.fullName?.givenName!
+
                 const userLogged = {
                     id: credential.user,
                     email: credential.email!,
-                    name: credential.fullName?.givenName!,
-                    photo: undefined
+                    name,
+                    photo: `https://ui-avatars.com/api/?name=${name}&length=1`
                 }
                 setUser(userLogged)
                 await AsyncStorage.setItem('@gofinances:user', JSON.stringify(userLogged))
@@ -88,12 +95,33 @@ function AuthProvider({ children }: AuthProviderProps) {
         }
     }
 
+    async function signOut() {
+        setUser({} as User)
+
+        await AsyncStorage.removeItem('@gofinances:user')
+    }
+
+    useEffect(() => {
+        async function loadUserStorageData() {
+            const userStorage = await AsyncStorage.getItem('@gofinances:user')
+
+            if(userStorage) {
+                const userLogged = JSON.parse(userStorage)
+                setUser(userLogged)
+            }
+            setUserIsLoading(false)
+        }
+        loadUserStorageData()
+    }, [])
+
     return (
         <AuthContext.Provider 
             value={{
                 user, 
                 signInWithGoogle,
-                signInWithApple
+                signInWithApple,
+                signOut,
+                userIsLoading
             }}
         >
             { children }

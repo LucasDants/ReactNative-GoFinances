@@ -23,6 +23,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { AppRoutesParamList } from "../../routes/app.routes";
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
+import { useAuth } from "../../hooks/auth";
 
 interface FormData {
   [name: string]: any;
@@ -33,7 +34,6 @@ type RegisterNavigationProps = BottomTabNavigationProp<
   "Cadastrar"
 >;
 
-const dataKey = '@gofinances:transactions'
 
 const schema = yup.object().shape({
   name: yup.string().required("Nome é obrigatório"),
@@ -45,6 +45,7 @@ export function Register() {
     key: "category",
     name: "Categoria",
   });
+  const { user }= useAuth()
   const [transactionType, setTransactionType] = useState("");
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
 
@@ -85,6 +86,7 @@ export function Register() {
     };
 
     try {
+      const dataKey = `@gofinances:transactions_user:${user.id}`
       const data = await AsyncStorage.getItem(dataKey)
       const currentData = data ? JSON.parse(data) : []
 
@@ -108,7 +110,7 @@ export function Register() {
 
   useEffect(() => {
       async function loadData() {
-        await AsyncStorage.getItem(dataKey)
+        await AsyncStorage.getItem(`@gofinances:transactions_user:${user.id}`)
       }
       
       loadData()
