@@ -27,7 +27,7 @@
 
 
 <h1>:rocket: Getting started</h1>
-<p>Make sure you have done the <a href="https://reactnative.dev/docs/environment-setup">development environment</a> and you will need a Discord CLIENT-ID for <a href="https://discord.com/developers">Sign In With Discord</a> </p>
+<p>Make sure you have done the <a href="https://reactnative.dev/docs/environment-setup">development environment</a></p>
 
 ```bash
 # Clone this repository
