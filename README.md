@@ -12,7 +12,7 @@
 </p>
 
 <h1>:memo:About</h1>
-<p>GamePlay is a project developed during the <a href="https://rocketseat.com/">Ignite</a> presented by <a href="https://www.linkedin.com/school/rocketseat/">Rockeseat</a>. This project is a way to manage your finances.</p>
+<p>GoFinances is a project developed during the <a href="https://rocketseat.com/">Ignite</a> presented by <a href="https://www.linkedin.com/school/rocketseat/">Rockeseat</a>. This project is a way to manage your finances.</p>
 
 
 <h1>:art:Layout</h1>
