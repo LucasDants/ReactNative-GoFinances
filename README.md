@@ -1,17 +1,14 @@
 
-<h1 align="center">:money: GoFinances :money:</h1>
+<h1 align="center">GoFinances</h1>
 <p align="center">GoFinances manage your finances!</p>
 
 <p align="center">
- <img  src="https://img.shields.io/github/package-json/dependency-version/LucasDants/ReactNative-Gameplay/react">
- <img  src="https://img.shields.io/github/package-json/dependency-version/LucasDants/ReactNative-Gameplay/react-native" >
- <img  src="https://img.shields.io/github/package-json/dependency-version/LucasDants/ReactNative-Gameplay/@react-navigation/native">
- <img  src="https://img.shields.io/github/package-json/dependency-version/LucasDants/ReactNative-Gameplay/react-native-app-auth">
-<img  src="https://img.shields.io/github/package-json/dependency-version/LucasDants/ReactNative-Gameplay/react-native-dotenv">
-<img  src="https://img.shields.io/github/package-json/dependency-version/LucasDants/ReactNative-Gameplay/react-native-splash-screen">
-<img  src="https://img.shields.io/github/package-json/dependency-version/LucasDants/ReactNative-Gameplay/react-native-svg">
-<img  src="https://img.shields.io/github/package-json/dependency-version/LucasDants/ReactNative-Gameplay/axios">
- <img  src="https://img.shields.io/github/package-json/dependency-version/LucasDants/ReactNative-Gameplay/dev/typescript">
+ <img  src="https://img.shields.io/github/package-json/dependency-version/LucasDants/ReactNative-GoFinances/react">
+ <img  src="https://img.shields.io/github/package-json/dependency-version/LucasDants/ReactNative-GoFinances/react-native" >
+ <img  src="https://img.shields.io/github/package-json/dependency-version/LucasDants/ReactNative-GoFinances/expo">
+ <img  src="https://img.shields.io/github/package-json/dependency-version/LucasDants/ReactNative-GoFinances/react-hook-form">
+<img  src="https://img.shields.io/github/package-json/dependency-version/LucasDants/ReactNative-GoFinances/victory-native">
+<img  src="https://img.shields.io/github/package-json/dependency-version/LucasDants/ReactNative-GoFinances/styled-components">
 </p>
 
 <h1>:memo:About</h1>
